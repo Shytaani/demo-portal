@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <header>ホーム</header>
+    <div sec:authorize="hasAuthority('ADMIN')" style="background-color: red;">
+        <h1>管理者用画面</h1>
+    </div>
+
+    <div sec:authorize="hasAuthority('EMPLOYEE')" style="background-color: blue;">
+        <h1>社員用画面</h1>
+    </div>
+
+    <div sec:authorize="hasAuthority('CLIENT')" style="background-color: green;">
+        <h1>顧客用画面</h1>
+    </div>
+    <footer>
+        <form th:action="@{/logout}" method="POST">
+            <sec:csrfInput />
+            <button>ログアウト</button>
+        </form>
+    </footer>
+</body>
+</html>

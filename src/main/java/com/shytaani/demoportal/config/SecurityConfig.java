@@ -4,6 +4,8 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -12,10 +14,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.formLogin(login -> login
+            .loginPage("/loginForm")
             .loginProcessingUrl("/login")
-            .loginPage("/login")
             .defaultSuccessUrl("/")
-            .failureUrl("/login?error")
+            .failureUrl("/loginForm?error")
             .permitAll()
         ).logout(logout -> logout
             .logoutSuccessUrl("/"))
@@ -23,6 +25,8 @@ public class SecurityConfig {
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
             .permitAll()
             .mvcMatchers("/")
+            .permitAll()
+            .antMatchers("/h2-console/**")
             .permitAll()
             // 管理者権限を持つユーザーのみアクセス可
             .mvcMatchers("/admin")
@@ -34,8 +38,13 @@ public class SecurityConfig {
             .mvcMatchers("/client")
             .hasRole("CLIENT")
             .anyRequest().authenticated()
-            );
+            ).csrf().ignoringAntMatchers("/h2-console/**")
+            .and().headers().frameOptions().sameOrigin();
         return httpSecurity.build();
     }
 
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
