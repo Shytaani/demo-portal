@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
     xmlns:th="http://www.thymeleaf.org">
-    <head></head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Login</title>
+    </head>
     <body>
         <p th:if="${param.error}" style="color: red;">ログインエラー</p>
         <form th:action="@{/login}" method="POST">

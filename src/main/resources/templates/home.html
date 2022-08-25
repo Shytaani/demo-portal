@@ -10,6 +10,7 @@
     <header>
         <h1>ホーム</h1>
     </header>
+
     <div sec:authorize="hasAuthority('ADMIN')" style="background-color: red;">
         <h1>管理者用画面</h1>
     </div>
@@ -21,6 +22,9 @@
     <div sec:authorize="hasAuthority('CLIENT')" style="background-color: green;">
         <h1>顧客用画面</h1>
     </div>
+
+    <p>ようこそ、<span sec:authorization="name"></span>さん</p>
+
     <footer>
         <form th:action="@{/logout}" method="POST">
             <sec:csrfInput />
