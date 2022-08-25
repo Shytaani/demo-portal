@@ -23,7 +23,7 @@
         <h1>顧客用画面</h1>
     </div>
 
-    <p>ようこそ、<span sec:authorization="name"></span>さん</p>
+    <p>ようこそ、<span sec:authentication="name"></span>さん</p>
 
     <footer>
         <form th:action="@{/logout}" method="POST">
